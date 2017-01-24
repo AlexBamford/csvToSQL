@@ -2,7 +2,7 @@ import csv
 import sqlite3
 
 researchData = open('researchData.csv')
-file = csv.reader(researchData, delimiter = ',')
+csvfile = csv.reader(researchData, delimiter = ',')
 
 connect = sqlite3.connect('researchData.sqlite')
 cur = connect.cursor()
@@ -13,7 +13,7 @@ headersList = list()
 count = 0
 headers = ""
 num = 0
-for line in file:
+for line in csvfile:
     # while count == 0:
     #     print line
     #     count += 1
@@ -44,7 +44,7 @@ print headers
 print headersList
 cur.execute("CREATE TABLE ResearchData ("+headers+");")
 count3 = 0
-for line in file:
+for line in csvfile:
     insertValues = ""
     while count3 <= len(line):
         insertValues = insertValues + "line["+str(count3)+"], "

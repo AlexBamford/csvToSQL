@@ -1,4 +1,4 @@
-# CCSV to sqlite3 converter
+# CSV to sqlite3 converter
 
 ## Work in Progress
 

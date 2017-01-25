@@ -7,15 +7,15 @@ import sqlite3
 researchData = open('researchData.csv')
 csvfile = csv.reader(researchData, delimiter = ',')
 
-connect = sqlite3.connect('researchData.sqlite')
+connect = sqlite3.connect('researchData2.sqlite')
 cur = connect.cursor()
-cur.execute('''DROP TABLE IF EXISTS ResearchData ''')
+cur.execute('''DROP TABLE IF EXISTS ResearchData2 ''')
 
 count = 0
 num = 1
 headers = " \""
 values_ = ""
-insertValues = ""
+# insertValues = ""
 for line in csvfile:
     while num == 1:
         while count < len(line)-1:
@@ -26,7 +26,7 @@ for line in csvfile:
                 pass
             headers = headers + item + "\", \""
             values_ = values_ + " ?,"
-            insertValues = insertValues + "line["+str(count)+"], "
+            # insertValues = insertValues + line[count]+", "
             count += 1
         while count < len(line):
             item = line[count]
@@ -36,24 +36,26 @@ for line in csvfile:
                 pass
             headers = headers + item + "\""
             values_ = values_ + " ?"
-            insertValues = insertValues + "line["+str(count)+"]"
+            # insertValues = insertValues + "line["+str(count)+"]"
             count += 1
         num += 1
-        cur.execute("CREATE TABLE ResearchData ("+headers+");")
+        cur.execute("CREATE TABLE ResearchData2 ("+headers+");")
     # print num
     # print len(line)
     # print headers
     # print values_
     # print insertValues
-print line[0]
-execution = "INSERT OR IGNORE INTO ResearchData ("+headers+") VALUES ("+values_+"),  ( "+insertValues+"))"
-print execution
-print cur.execute(execution)
+for c, line in enumerate(csvfile):
+    if c > 0:
+        executionFirstArg = "INSERT OR IGNORE INTO ResearchData2 ("+headers+") VALUES ("+values_+")"
+        print c
+# print executionFirstArg
+        cur.execute(executionFirstArg, line)
 
 #     cur.execute(execution)
 
 #     cur.execute('''INSERT OR IGNORE INTO ResearchData (column_1 , A1 , A2 , A3 , A4 , A5 , C1 , C2 , C3 , C4 , C5 , E1 , E2 , E3 , E4 , E5 , N1 , N2 , N3 , N4 , N5 , O1 , O2 , O3 , O4 , O5 , gender , education , age) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', ( line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[7], line[8], line[9], line[10], line[11], line[12], line[13], line[14], line[15], line[16], line[17], line[18], line[19], line[20], line[21], line[22], line[23], line[24], line[25], line[26], line[27], line[28]))
-# connect.commit()
+connect.commit()
 # connect.commit()
 # cur.close()
 # print "... task complete"
